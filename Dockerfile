@@ -1,15 +1,14 @@
 FROM golang:alpine3.14 as builder
-RUN apk add --no-cache ca-certificates tzdata
 
 # https://tailscale.com/kb/1118/custom-derp-servers/
 RUN go install tailscale.com/cmd/derper@latest
 
-FROM scratch
+FROM alpine:3
 MAINTAINER xorkevin <kevin@xorkevin.com>
 WORKDIR /home/derper
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+RUN apk add --no-cache ca-certificates tzdata
+
 COPY --from=builder /go/bin/derper .
 
 VOLUME /var/lib/derper
