@@ -2,7 +2,7 @@ FROM golang:alpine3.14 as builder
 RUN apk add --no-cache ca-certificates tzdata
 
 # https://tailscale.com/kb/1118/custom-derp-servers/
-RUN go install tailscale.com/cmd/derper@main
+RUN go install tailscale.com/cmd/derper@latest
 
 FROM scratch
 MAINTAINER xorkevin <kevin@xorkevin.com>
